@@ -21,6 +21,11 @@ public class MovieService {
         return movieDao.selectMovies();
     }
 
+    public Movie getMovie(int id) {
+        return movieDao.selectMovieById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Movie with id %s not found", id)));
+    }
+
     @Transactional
     public void addNewMovie(Movie movie) {
         // TODO: check if movie exists
@@ -41,10 +46,5 @@ public class MovieService {
         }, () -> {
             throw new NotFoundException(String.format("Movie with id %s not found", id));
         });
-    }
-
-    public Movie getMovie(int id) {
-        return movieDao.selectMovieById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Movie with id %s not found", id)));
     }
 }
