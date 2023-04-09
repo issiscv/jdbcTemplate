@@ -22,12 +22,7 @@ public class ActorDaoImpl implements ActorDao {
                 FROM actor
                 LIMIT 100;
                 """;
-        return jdbcTemplate.query(sql, (resultSet, i) ->
-                new Actor(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getInt("movie")
-                ));
+        return jdbcTemplate.query(sql, new ActorRowMapper());
     }
 
     @Override
@@ -56,11 +51,6 @@ public class ActorDaoImpl implements ActorDao {
                 WHERE id = ?
                 LIMIT 100;
                 """;
-        return jdbcTemplate.query(sql, (resultSet, i) ->
-                new Actor(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getInt("movie")
-                ), id).stream().findFirst();
+        return jdbcTemplate.query(sql, new ActorRowMapper(), id).stream().findFirst();
     }
 }
